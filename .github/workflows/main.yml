@@ -29,13 +29,13 @@ jobs:
 
           # 2. Setup upstream remote and fetch
           # We check if 'upstream' exists; if not, add it. If it does, update the URL.
-          
+
           if ! git remote | grep -q 'upstream'; then
             echo "Adding upstream remote..."
             git remote add upstream https://github.com/${UPSTREAM_REPO}.git
           else
             echo "Upstream remote already exists, updating URL..."
-            git remote set-url upstream https://github.com/${UPSTREAM_REPO}.git
+            # git remote set-url upstream https://github.com/${UPSTREAM_REPO}.git
           fi
 
           git remote add upstream https://github.com/${UPSTREAM_REPO}.git
