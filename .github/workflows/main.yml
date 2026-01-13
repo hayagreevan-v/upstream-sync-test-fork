@@ -85,39 +85,56 @@ jobs:
           fi
 
       - name: Send PR created Email Notification
-        if: steps.sync_upstream.outputs.pr_created == 'true' # Runs even if the sync fails to alert you of issues
+        if: steps.sync_upstream.outputs.pr_created == 'true'
         uses: dawidd6/action-send-mail@v3
         with:
-          # SMTP Server settings (Example using Gmail)
           server_address: smtp.gmail.com
           server_port: 465
           username: ${{ secrets.MAIL_USERNAME }}
           password: ${{ secrets.MAIL_PASSWORD }}
-          subject: "GitHub Action: Upstream Sync PR Raised - ${{ github.repository }}"
-          to: drmarsqueen@gmail.com
-          from: GitHub Actions Sync
+          subject: "New Upstream Sync PR for ${{ github.repository }}"
+          to: drmarsqueen@gmail.com,hayagreevanvk@gmail.com
+          from: HAI Build Codegen - GitHub Actions
           body: |
-            New changes found in Cline Repository.
-            The upstream sync PR has been raised!
+            Hello Team,
+
+            This is an automated notification to inform you that new commits have been detected in the upstream Cline repository. 
             
-            PR: ${{ steps.sync_upstream.outputs.pr_url }}
+            A new Pull Request has been successfully generated to synchronize your fork with these changes.
+
+            Repository: ${{ github.repository }}
+            Action: New Pull Request Created
+            PR Link: ${{ steps.sync_upstream.outputs.pr_url }}
+
+            Please review the changes and merge at your earliest convenience to keep the fork up to date.
+
+            Regards,
+            GitHub Actions Runner
 
 
       - name: Send New Changes found Email Notification
-        if: steps.sync_upstream.outputs.new_changes_found == 'true' # Runs even if the sync fails to alert you of issues
+        if: steps.sync_upstream.outputs.new_changes_found == 'true' 
         uses: dawidd6/action-send-mail@v3
         with:
-          # SMTP Server settings (Example using Gmail)
           server_address: smtp.gmail.com
           server_port: 465
           username: ${{ secrets.MAIL_USERNAME }}
           password: ${{ secrets.MAIL_PASSWORD }}
-          subject: "GitHub Action: Upstream Sync - ${{ github.repository }}"
-          to: drmarsqueen@gmail.com
-          from: GitHub Actions Sync
+          subject: "Existing Sync PR Updated for ${{ github.repository }}"
+          to: drmarsqueen@gmail.com,hayagreevanvk@gmail.com
+          from: HAI Build Codegen - GitHub Actions
           body: |
-            New changes found in Cline Repository.
-            Existing PR updated with new commits.
+            Hello Team,
 
-            PR: ${{ steps.sync_upstream.outputs.pr_url }}
+            New updates have been detected in the upstream Cline repository. Since a synchronization Pull Request was already open, it has been automatically updated with the latest commits.
+
+            Repository: ${{ github.repository }}
+            Action: Existing PR Updated
+            PR Link: ${{ steps.sync_upstream.outputs.pr_url }}
+
+            The pull request is ready for your final review and merge.
+
+            Regards,
+            GitHub Actions Runner
+            
             
