@@ -35,10 +35,9 @@ jobs:
             git remote add upstream https://github.com/${UPSTREAM_REPO}.git
           else
             echo "Upstream remote already exists, updating URL..."
-            # git remote set-url upstream https://github.com/${UPSTREAM_REPO}.git
+            git remote set-url upstream https://github.com/${UPSTREAM_REPO}.git
           fi
 
-          git remote add upstream https://github.com/${UPSTREAM_REPO}.git
           git fetch upstream main
 
           # 3. Checkout to upstream-main branch
