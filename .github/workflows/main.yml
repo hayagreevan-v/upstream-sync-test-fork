@@ -1,0 +1,69 @@
+name: Upstream Auto Sync via PR
+on:
+  schedule:
+    - cron: '0 0 * * *' # Runs daily. Change to '*/30 * * * *' for every 30 mins.
+  workflow_dispatch:   # Allows manual trigger
+
+jobs:
+  sync:
+    runs-on: self-hosted
+    permissions:
+      contents: write
+      pull-requests: write
+
+    steps:
+      - name: Checkout Fork
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Check and Sync Upstream
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          UPSTREAM_REPO: "hayagreevan-presidio/upstream-sync-test-upstream"
+          FORK_REPO: "hayagreevan-v/upstream-sync-test-fork"
+        run: |
+          # 1. Setup Git Identity (Required for merge commits)
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          # 2. Setup upstream remote and fetch
+          git remote add upstream https://github.com/${UPSTREAM_REPO}.git
+          git fetch upstream main
+
+          # 3. Checkout to upstream-main branch
+          # This ensures we are merging upstream into our upstream-main branch
+          git checkout upstream-main 
+
+          # 4. Check if upstream is actually ahead of our main
+          LOCAL_HASH=$(git rev-parse HEAD)
+          UPSTREAM_HASH=$(git rev-parse upstream/main)
+
+          if [ "$LOCAL_HASH" = "$UPSTREAM_HASH" ]; then
+            echo "No changes found. Skipping sync."
+            exit 0
+          fi
+
+          # 5. Check if a PR already exists with this title
+          # We get the count of open PRs with this title
+          PR_COUNT=$(gh pr list --repo $FORK_REPO --state open --search "Merge from Cline" --json id --jq '. | length')
+          
+          # 6. Merge upstream into the sync branch
+          echo "New commits detected. Merging..."
+          git merge upstream/main --no-edit
+          
+          # 7. Push the branch (use force-with-lease to update existing PR branch safely)
+          git push origin upstream-main
+
+          # 8. Create the PR only if it doesn't already exist
+          if [ "$PR_COUNT" -eq 0 ]; then
+            echo "Creating new Pull Request..."
+            gh pr create \
+              --repo $FORK_REPO \
+              --title "Merge from Cline" \
+              --body "This is an automated PR to sync changes from cline repo." \
+              --base main \
+              --head upstream-main
+          else
+            echo "Existing PR updated with new commits."
+          fi
