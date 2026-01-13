@@ -87,7 +87,7 @@ jobs:
           username: ${{ secrets.MAIL_USERNAME }}
           password: ${{ secrets.MAIL_PASSWORD }}
           subject: "GitHub Action: Upstream Sync Status - ${{ github.repository }}"
-          to: your-email@example.com
+          to: drmarsqueen@gmail.com
           from: GitHub Actions Sync
           body: |
             The upstream sync workflow has completed.
