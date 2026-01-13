@@ -18,6 +18,7 @@ jobs:
           fetch-depth: 0
 
       - name: Check and Sync Upstream
+        id: sync_upstream
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           UPSTREAM_REPO: "hayagreevan-presidio/upstream-sync-test-upstream"
@@ -64,21 +65,27 @@ jobs:
           # 7. Push the branch (use force-with-lease to update existing PR branch safely)
           git push origin upstream-main
 
-          # 8. Create the PR only if it doesn't already exist
-          if [ "$PR_COUNT" -eq 0 ]; then
+          EXISTING_PR_URL=$(gh pr list --repo $FORK_REPO --state open --search "Merge from Cline" --json url --jq '.[0].url')
+
+          if [ -z "$EXISTING_PR_URL" ]; then
             echo "Creating new Pull Request..."
-            gh pr create \
+            NEW_PR_URL=$(gh pr create \
               --repo $FORK_REPO \
               --title "Merge from Cline" \
               --body "This is an automated PR to sync changes from cline repo." \
               --base main \
-              --head upstream-main
+              --head upstream-main)
+            
+            echo "pr_url=$NEW_PR_URL" >> $GITHUB_OUTPUT
+            echo "pr_created=true" >> $GITHUB_OUTPUT
           else
             echo "Existing PR updated with new commits."
+            echo "pr_url=$EXISTING_PR_URL" >> $GITHUB_OUTPUT
+            echo "new_changes_found=true" >> $GITHUB_OUTPUT
           fi
 
-      - name: Send Email Notification
-        if: always() # Runs even if the sync fails to alert you of issues
+      - name: Send PR created Email Notification
+        if: steps.sync_upstream.outputs.pr_created == 'true' # Runs even if the sync fails to alert you of issues
         uses: dawidd6/action-send-mail@v3
         with:
           # SMTP Server settings (Example using Gmail)
@@ -86,14 +93,31 @@ jobs:
           server_port: 465
           username: ${{ secrets.MAIL_USERNAME }}
           password: ${{ secrets.MAIL_PASSWORD }}
-          subject: "GitHub Action: Upstream Sync Status - ${{ github.repository }}"
+          subject: "GitHub Action: Upstream Sync PR Raised - ${{ github.repository }}"
           to: drmarsqueen@gmail.com
           from: GitHub Actions Sync
           body: |
-            The upstream sync workflow has completed.
+            New changes found in Cline Repository.
+            The upstream sync PR has been raised!
             
-            Status: ${{ job.status }}
-            Repository: ${{ github.repository }}
-            Workflow: ${{ github.workflow }}
+            PR: ${{ steps.sync_upstream.outputs.pr_url }}
+
+
+      - name: Send New Changes found Email Notification
+        if: steps.sync_upstream.outputs.new_changes_found == 'true' # Runs even if the sync fails to alert you of issues
+        uses: dawidd6/action-send-mail@v3
+        with:
+          # SMTP Server settings (Example using Gmail)
+          server_address: smtp.gmail.com
+          server_port: 465
+          username: ${{ secrets.MAIL_USERNAME }}
+          password: ${{ secrets.MAIL_PASSWORD }}
+          subject: "GitHub Action: Upstream Sync - ${{ github.repository }}"
+          to: drmarsqueen@gmail.com
+          from: GitHub Actions Sync
+          body: |
+            New changes found in Cline Repository.
+            Existing PR updated with new commits.
+
+            PR: ${{ steps.sync_upstream.outputs.pr_url }}
             
-            Check the details here: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
