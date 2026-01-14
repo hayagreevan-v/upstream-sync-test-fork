@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+  body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
+  .container { width: 90%; max-width: 600px; margin: 20px auto; border: 1px solid #ddd; padding: 20px; }
+  .header { text-align: center; margin-bottom: 20px; }
+  .header img { max-width: 100%; height: auto; }
+  a { color: #007bff; text-decoration: none; }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <div class="header">
+    <img src="image_0.png" alt="Header Image">
+  </div>
+
+  <p>New changes found in Cline Repository.</p>
+  <p>Existing PR updated with new commits.</p>
+
+  <p>Existing PR Link: <a href="${{ steps.sync_upstream.outputs.pr_url }}">${{ steps.sync_upstream.outputs.pr_url }}</a></p>
+</div>
+
+</body>
+</html>

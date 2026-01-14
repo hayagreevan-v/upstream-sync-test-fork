@@ -95,21 +95,27 @@ jobs:
           subject: "New Upstream Sync PR for ${{ github.repository }}"
           to: drmarsqueen@gmail.com,hayagreevanvk@gmail.com
           from: HAI Build Codegen - GitHub Actions
-          body: |
-            Hello Team,
-
-            This is an automated notification to inform you that new commits have been detected in the upstream Cline repository. 
-            
-            A new Pull Request has been successfully generated to synchronize your fork with these changes.
-
-            Repository: ${{ github.repository }}
-            Action: New Pull Request Created
-            PR Link: ${{ steps.sync_upstream.outputs.pr_url }}
-
-            Please review the changes and merge at your earliest convenience to keep the fork up to date.
-
-            Regards,
-            GitHub Actions Runner
+          embedded_nodes: ../../hai_build_logo_light.png
+          html_body: |
+            <!DOCTYPE html>
+            <html>
+              <body style="font-family: Arial, sans-serif; color: #333;">
+                <div style="max-width: 600px; margin: 20px auto; border: 1px solid #ddd; padding: 20px;">
+                  <div style="text-align: center; margin-bottom: 20px;">
+                    <img src="cid:hai_build_logo_light.png" alt="Header Logo" style="max-width: 200px;">
+                  </div>
+                  <h2 style="color: #2c3e50;">New Sync PR Raised</h2>
+                  <p>New changes were found in the <b>Cline Repository</b>.</p>
+                  <p>A new Pull Request has been automatically created to sync these changes.</p>
+                  <div style="margin-top: 20px;">
+                    <a href="${{ steps.sync_upstream.outputs.pr_url }}" 
+                       style="background-color: #007bff; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;">
+                       View Pull Request
+                    </a>
+                  </div>
+                </div>
+              </body>
+            </html>
 
 
       - name: Send New Changes found Email Notification
@@ -123,18 +129,20 @@ jobs:
           subject: "Existing Sync PR Updated for ${{ github.repository }}"
           to: drmarsqueen@gmail.com,hayagreevanvk@gmail.com
           from: HAI Build Codegen - GitHub Actions
-          body: |
-            Hello Team,
-
-            New updates have been detected in the upstream Cline repository. Since a synchronization Pull Request was already open, it has been automatically updated with the latest commits.
-
-            Repository: ${{ github.repository }}
-            Action: Existing PR Updated
-            PR Link: ${{ steps.sync_upstream.outputs.pr_url }}
-
-            The pull request is ready for your final review and merge.
-
-            Regards,
-            GitHub Actions Runner
-            
+          embedded_nodes: ../../hai_build_logo_light.png
+          html_body: |
+            <!DOCTYPE html>
+            <html>
+              <body style="font-family: Arial, sans-serif; color: #333;">
+                <div style="max-width: 600px; margin: 20px auto; border: 1px solid #ddd; padding: 20px;">
+                  <div style="text-align: center; margin-bottom: 20px;">
+                    <img src="cid:hai_build_logo_light.png" alt="Header Logo" style="max-width: 200px;">
+                  </div>
+                  <h2 style="color: #2c3e50;">Existing PR Updated</h2>
+                  <p>New changes found in <b>Cline Repository</b>.</p>
+                  <p>The existing sync PR has been updated with the latest commits.</p>
+                  <p>View the update here: <a href="${{ steps.sync_upstream.outputs.pr_url }}">${{ steps.sync_upstream.outputs.pr_url }}</a></p>
+                </div>
+              </body>
+            </html>
             
