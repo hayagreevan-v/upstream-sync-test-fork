@@ -10,7 +10,6 @@ jobs:
     permissions:
       contents: write
       pull-requests: write
-      workflows: write
 
     steps:
       - name: Checkout Fork
@@ -21,7 +20,7 @@ jobs:
       - name: Check and Sync Upstream
         id: sync_upstream
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.PAT_TOKEN}}
           UPSTREAM_REPO: "hayagreevan-presidio/upstream-sync-test-upstream"
           FORK_REPO: "hayagreevan-v/upstream-sync-test-fork"
         run: |
