@@ -61,6 +61,11 @@ jobs:
           # 6. Merge upstream into the sync branch
           echo "New commits detected. Merging..."
           git merge upstream/main --no-edit
+
+          # Excluding Workflow changes
+          git restore --staged .github/workflows
+          git restore .github/workflows
+          git commit -m "Sync upstream (exclude workflows)"
           
           # 7. Push the branch (use force-with-lease to update existing PR branch safely)
           git push origin upstream-main
