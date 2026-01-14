@@ -129,7 +129,7 @@ jobs:
           subject: "Existing Sync PR Updated for ${{ github.repository }}"
           to: drmarsqueen@gmail.com,hayagreevanvk@gmail.com
           from: HAI Build Codegen - GitHub Actions
-          embedded_nodes: ../../hai_build_logo_light.png
+          attachments: ./hai_build_logo_light.png
           html_body: |
             <!DOCTYPE html>
             <html>
