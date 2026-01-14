@@ -10,6 +10,7 @@ jobs:
     permissions:
       contents: write
       pull-requests: write
+      workflows: write
 
     steps:
       - name: Checkout Fork
@@ -103,7 +104,7 @@ jobs:
                   <div style="text-align: center; margin-bottom: 20px;">
                     <img src="https://raw.githubusercontent.com/presidio-oss/hai-build-codegen/afad79317dfabbf54b45639d17f5c1abbcb13905/assets/img/hai_build_logo_theme.png" alt="Header Logo">
                   </div>
-                  <h2 style="color: #2c3e50; border-bottom: 2px solid #3498db; padding-bottom: 10px;">New Sync PR Raised</h2>
+                  <h2 style="color: #2c3e50; border-bottom: 2px solid #3498db; padding-bottom: 10px;">New Sync PR Created</h2>
                   <p>New changes were found in the <b>Cline Repository</b>.</p>
                   <p>A new Pull Request has been automatically created to sync these changes into your fork.</p>
                   <div style="margin: 30px 0; text-align: center;">
@@ -129,7 +130,7 @@ jobs:
           server_port: 465
           username: ${{ secrets.MAIL_USERNAME }}
           password: ${{ secrets.MAIL_PASSWORD }}
-          subject: "[Upstream Sync] Existing PR updated with new commits"
+          subject: "HAI Code Gen - Existing PR Updated With New Commits [Upstream Sync]"
           to: drmarsqueen@gmail.com,hayagreevanvk@gmail.com
           from: HAI Build Codegen - GitHub Actions
           html_body: |
