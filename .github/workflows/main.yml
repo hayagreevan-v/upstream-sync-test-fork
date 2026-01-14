@@ -92,7 +92,7 @@ jobs:
           server_port: 465
           username: ${{ secrets.MAIL_USERNAME }}
           password: ${{ secrets.MAIL_PASSWORD }}
-          subject: "New Upstream Sync PR for ${{ github.repository }}"
+          subject: "[Upstream Sync] New PR created with latest changes"
           to: drmarsqueen@gmail.com,hayagreevanvk@gmail.com
           from: HAI Build Codegen - GitHub Actions
           html_body: |
@@ -129,7 +129,7 @@ jobs:
           server_port: 465
           username: ${{ secrets.MAIL_USERNAME }}
           password: ${{ secrets.MAIL_PASSWORD }}
-          subject: "Existing Sync PR Updated for ${{ github.repository }}"
+          subject: "[Upstream Sync] Existing PR updated with new commits"
           to: drmarsqueen@gmail.com,hayagreevanvk@gmail.com
           from: HAI Build Codegen - GitHub Actions
           html_body: |
