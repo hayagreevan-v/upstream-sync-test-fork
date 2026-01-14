@@ -63,8 +63,8 @@ jobs:
           git merge upstream/main --no-edit
 
           # Excluding Workflow changes
-          git restore --staged .github/workflows
-          git restore .github/workflows
+          git checkout main -- .github/workflows
+          
           if [[ `git status --porcelain` ]]; then
             git commit -m "Sync upstream (exclude workflows)"
           fi
