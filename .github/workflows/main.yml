@@ -95,27 +95,31 @@ jobs:
           subject: "New Upstream Sync PR for ${{ github.repository }}"
           to: drmarsqueen@gmail.com,hayagreevanvk@gmail.com
           from: HAI Build Codegen - GitHub Actions
-          embedded_nodes: ../../hai_build_logo_light.png
+          attachments: ./hai_build_logo_light.png
           html_body: |
             <!DOCTYPE html>
             <html>
-              <body style="font-family: Arial, sans-serif; color: #333;">
-                <div style="max-width: 600px; margin: 20px auto; border: 1px solid #ddd; padding: 20px;">
+              <body style="font-family: Arial, sans-serif; color: #333; margin: 0; padding: 0;">
+                <div style="max-width: 600px; margin: 20px auto; border: 1px solid #eeeeee; padding: 20px; border-radius: 8px;">
                   <div style="text-align: center; margin-bottom: 20px;">
-                    <img src="cid:hai_build_logo_light.png" alt="Header Logo" style="max-width: 200px;">
+                    <img src="hai_build_logo_light.png" alt="Header Logo" style="max-width: 200px; height: auto;">
                   </div>
-                  <h2 style="color: #2c3e50;">New Sync PR Raised</h2>
+                  <h2 style="color: #2c3e50; border-bottom: 2px solid #3498db; padding-bottom: 10px;">New Sync PR Raised</h2>
                   <p>New changes were found in the <b>Cline Repository</b>.</p>
-                  <p>A new Pull Request has been automatically created to sync these changes.</p>
-                  <div style="margin-top: 20px;">
+                  <p>A new Pull Request has been automatically created to sync these changes into your fork.</p>
+                  <div style="margin: 30px 0; text-align: center;">
                     <a href="${{ steps.sync_upstream.outputs.pr_url }}" 
-                       style="background-color: #007bff; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;">
+                       style="background-color: #3498db; color: #ffffff; padding: 12px 25px; text-decoration: none; border-radius: 5px; font-weight: bold; display: inline-block;">
                        View Pull Request
                     </a>
                   </div>
+                  <p style="font-size: 12px; color: #7f8c8d; border-top: 1px solid #eeeeee; padding-top: 15px;">
+                    This is an automated notification from your GitHub Actions pipeline.
+                  </p>
                 </div>
               </body>
             </html>
+             
 
 
       - name: Send New Changes found Email Notification
@@ -136,9 +140,9 @@ jobs:
               <body style="font-family: Arial, sans-serif; color: #333;">
                 <div style="max-width: 600px; margin: 20px auto; border: 1px solid #ddd; padding: 20px;">
                   <div style="text-align: center; margin-bottom: 20px;">
-                    <img src="cid:hai_build_logo_light.png" alt="Header Logo" style="max-width: 200px;">
+                    <img src="hai_build_logo_light.png" alt="Header Logo" style="max-width: 200px; height: auto;">
                   </div>
-                  <h2 style="color: #2c3e50;">Existing PR Updated</h2>
+                  <h2 style="color: #2c3e50; border-bottom: 2px solid #3498db; padding-bottom: 10px;">Existing PR Updated</h2>
                   <p>New changes found in <b>Cline Repository</b>.</p>
                   <p>The existing sync PR has been updated with the latest commits.</p>
                   <p>View the update here: <a href="${{ steps.sync_upstream.outputs.pr_url }}">${{ steps.sync_upstream.outputs.pr_url }}</a></p>
