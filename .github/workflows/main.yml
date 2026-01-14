@@ -66,6 +66,7 @@ jobs:
           rm -rf .github/workflows
 
           if [[ `git status --porcelain` ]]; then
+            git add .
             git commit -m "Sync upstream (exclude workflows)"
           fi
           
