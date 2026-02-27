@@ -1,7 +1,7 @@
 name: Upstream Auto Sync via PR
 on:
-  schedule:
-    - cron: '0 0 * * *' # Runs daily.
+  # schedule:
+  #  - cron: '0 0 * * *' # Runs daily.
   workflow_dispatch:  
 
 jobs:
